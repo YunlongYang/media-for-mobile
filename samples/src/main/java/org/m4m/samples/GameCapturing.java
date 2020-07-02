@@ -66,7 +66,7 @@ public class GameCapturing extends Activity implements GameCaptureSettingsPopup.
     private Timer timer;
     private long startTime;
 
-    protected String videoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator;
+    protected String videoPath = "";// = Environment.getExternalStorageDirectory(Environment.DIRECTORY_DCIM) + File.separator;
     protected String lastFileName;
 
     final Handler uiHandler = new Handler() {
@@ -119,7 +119,7 @@ public class GameCapturing extends Activity implements GameCaptureSettingsPopup.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        videoPath = getExternalFilesDir(Environment.DIRECTORY_DCIM)+ File.separator;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

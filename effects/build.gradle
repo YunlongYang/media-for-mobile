@@ -1,22 +1,11 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-    }
-}
-
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 21
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -29,8 +18,8 @@ android {
 }
 
 dependencies {
-    compile project(':domain')
-    compile project(':android')
+    api project(':domain')
+    api project(':android')
 }
 
 group = "org.m4m"
