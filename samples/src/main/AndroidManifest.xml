@@ -99,7 +99,7 @@
         <activity
                 android:name="org.m4m.samples.CameraCapturerActivity"
                 android:configChanges="keyboardHidden|orientation|screenSize"
-                android:screenOrientation="landscape"
+                android:screenOrientation="fullSensor"
                 android:theme="@android:style/Theme.Black.NoTitleBar"
                 android:label="Camera Capturer"/>
 
@@ -111,7 +111,17 @@
                 android:name="org.m4m.samples.ComposerAudioEffectCoreActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="Audio Effect Core"/>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="org.m4m.samples"
+            android:exported="false"
+            android:grantUriPermissions="true">
 
+            <!-- 元数据 -->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
     </application>
 
 </manifest>

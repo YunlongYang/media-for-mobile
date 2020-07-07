@@ -25,16 +25,21 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Size;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.FileProvider;
+
 import org.m4m.IProgressListener;
 
 import org.m4m.samples.controls.GameCaptureSettingsPopup;
@@ -209,7 +214,7 @@ public class GameCapturing extends Activity implements GameCaptureSettingsPopup.
     }
 
     protected void startCapturing() throws IOException {
-        lastFileName = "game_capturing.mp4";
+        lastFileName = "game_capturing_"+System.currentTimeMillis()+".mp4";
         gameRenderer.startCapturing(videoPath + lastFileName);
     }
 
@@ -247,26 +252,29 @@ public class GameCapturing extends Activity implements GameCaptureSettingsPopup.
     }
 
     public void updateVideoPreview() {
-        Bitmap thumb;
-
-        thumb = ThumbnailUtils.createVideoThumbnail(videoPath + lastFileName, MediaStore.Video.Thumbnails.MINI_KIND);
-
+        Bitmap thumb = null;
         ImageButton preview = (ImageButton)findViewById(R.id.preview);
-
+        CancellationSignal cancellationSignal = new CancellationSignal();
+        try {
+            thumb = ThumbnailUtils.createVideoThumbnail(new File(videoPath,lastFileName),new Size(surfaceView.getWidth(),surfaceView.getHeight()),cancellationSignal);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(thumb == null) {
             preview.setVisibility(View.INVISIBLE);
         } else {
             preview.setVisibility(View.VISIBLE);
             preview.setImageBitmap(thumb);
         }
+
     }
 
     protected void playVideo() {
-        String videoUrl = "file:///" + videoPath + lastFileName;
+
+//        String videoUrl = "file:///" + videoPath + lastFileName;
 
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-
-        Uri data = Uri.parse(videoUrl);
+        Uri data = FileProvider.getUriForFile(this,"org.m4m.samples",new File(videoPath,lastFileName));
         intent.setDataAndType(data, "video/mp4");
         startActivity(intent);
     }

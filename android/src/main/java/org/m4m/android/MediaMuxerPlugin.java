@@ -25,8 +25,12 @@ import org.m4m.domain.MediaFormat;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.logging.Logger;
 
 public class MediaMuxerPlugin implements IMediaMuxer {
+
+    private static final Logger logger = Logger.getLogger("MediaMuxerPlugin");
+
     private final MediaMuxer mediaMuxer;
 
     private long[] lastPresentationTime = new long[2];
@@ -87,7 +91,7 @@ public class MediaMuxerPlugin implements IMediaMuxer {
         }
 
         lastPresentationTime[trackIndex] =  bufferInfo.presentationTimeUs;
-
+        logger.info("writeSampleData to "+trackIndex+" presentationTimeUs:"+ bufferInfo.presentationTimeUs);
         mediaMuxer.writeSampleData(trackIndex, buffer, ByteBufferTranslator.from(bufferInfo));
     }
 }
